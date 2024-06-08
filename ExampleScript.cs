@@ -71,6 +71,8 @@ public class ExampleScript : MonoBehaviour
         equation = Regex.Replace(equation, @"([a-zA-Z])(\d)", "$1*$2"); // e.g., x2 -> x*2
         equation = Regex.Replace(equation, @"(x)([a-zA-Z])", "$1*$2"); // e.g., 2x -> 2*x
         equation = Regex.Replace(equation, @"([a-zA-Z])(x)", "$1*$2"); // e.g., x2 -> x*2
+        equation = Regex.Replace(equation, @"(\))(\d)", "$1*$2");
+        equation = Regex.Replace(equation, @"(\))([a-zA-Z])", "$1*$2");
 
         equation = trigRegex.Replace(equation, match =>
         {
