@@ -1,0 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using System.Text.RegularExpressions;
+
+public class Lr_LineController : MonoBehaviour
+{
+    private LineRenderer lr;
+    [SerializeField] private EdgeCollider2D lineCollider;
+
+    List<Vector2> points = new List<Vector2> {};
+
+    // the min and max of the function 
+    public float min;
+    public float max;
+    public string inputEquation; 
+    
+    
+
+    private void createPoints()
+    {
+
+        for (double xValue = min; xValue < max; xValue += 0.1)
+        {
+            // you have to round because values like 19.000004 give super weird errors
+            xValue = Math.Round(xValue, 1);
+            
+            Debug.Log(xValue);
+            var variables = new Dictionary<string, float> { { "x", (float)xValue } };
+            float evalResult = EvalEquation.EvaluateExpression(inputEquation, variables);
+            //Debug.Log(evalResult);
+            float result = float.Parse(evalResult.ToString());
+            //Debug.Log(result);
+            points.Add(new Vector2((float)xValue, result));
+
+        }
+    }
+
+    /// <summary>
+    /// Sets up the line's points and the collider 
+    /// </summary>
+    /// <param name="points"> All the points on the line</param>
+    public void SetUpLine(List<Vector2> points)
+    {
+        createPoints();
+        lr.positionCount = points.Count;
+        this.points = points;
+        lineCollider.SetPoints(points);
+
+    }
+
+    private void DrawLine() {
+        lr = GetComponent<LineRenderer>();
+        SetUpLine(points);
+        for (int i = 0; i < points.Count; i++)
+        {
+            lr.SetPosition(i, points[i]);
+        }
+    }
+
+
+
+    void Start()
+    {
+        DrawLine();
+
+    }
+
+}
