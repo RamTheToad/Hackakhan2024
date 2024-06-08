@@ -90,9 +90,17 @@ public class ExampleScript : MonoBehaviour
                 switch (function)
                 {
                     case "sin":
-                        return Mathf.Sin(value * Mathf.Deg2Rad).ToString();
+                        if (value%180<0.01){
+                            return 0.ToString();
+                        }else{
+                            return Mathf.Sin(value * Mathf.Deg2Rad).ToString();
+                        }
                     case "cos":
-                        return Mathf.Cos(value * Mathf.Deg2Rad).ToString();
+                        if ((value+90)%180<0.01){
+                            return 0.ToString();
+                        }else{
+                            return Mathf.Cos(value * Mathf.Deg2Rad).ToString();
+                        }
                     case "tan":
                         return Mathf.Tan(value * Mathf.Deg2Rad).ToString();
                     default:
