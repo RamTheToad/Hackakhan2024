@@ -22,6 +22,7 @@ public class ExampleScript : MonoBehaviour
 
         // Handle nested expressions
         equation = EvaluateNestedExpressions(equation);
+        equation = FixNests(equation);
 
         // Evaluate the final equation
         if (ExpressionEvaluator.Evaluate(equation, out float result))
@@ -128,7 +129,8 @@ public class ExampleScript : MonoBehaviour
                 string innerExpression = match.Groups[1].Value;
                 if (ExpressionEvaluator.Evaluate(innerExpression, out float innerResult))
                 {
-                    return innerResult.ToString();
+                    return "["+innerResult.ToString()+"]";
+                    
                 }
                 else
                 {
@@ -138,6 +140,13 @@ public class ExampleScript : MonoBehaviour
             });
         }
 
+        return equation;
+    }
+
+    private static string FixNests(string equation)
+    {
+        equation = equation.Replace('[', '(');
+        equation = equation.Replace(']', ')');
         return equation;
     }
 }
